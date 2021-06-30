@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="false"
     android:layout_marginBottom="5dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/d6bbe4"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
     android:background="@drawable/item_background"
     android:divider="@drawable/border"
     android:orientation="vertical"
     android:showDividers="middle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/type"
@@ -18,6 +31,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:text="@string/type"
+        android:textColor="#584718"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/gsm_rssi"
@@ -25,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/gsm_rssi"
         android:textSize="16sp" />
 
@@ -34,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/strength"
         android:textSize="16sp" />
 
@@ -43,6 +59,7 @@
         style="@style/word_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#584718"
         android:fontFamily="sans-serif-medium"
         android:text="@string/time"
         android:textSize="16sp" />
@@ -53,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/altitude"
         android:textSize="16sp" />
 
@@ -62,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/longitude"
         android:textSize="16sp" />
 
@@ -71,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/arfcn"
         android:textSize="16sp" />
 
@@ -80,6 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/lac"
         android:textSize="16sp" />
 
@@ -89,12 +110,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/tac"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/cid"
         style="@style/word_title"
         android:layout_width="match_parent"
+        android:textColor="#584718"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:text="@string/cell_identity"
@@ -105,6 +128,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/plmn"
         android:textSize="16sp" />
     <TextView
@@ -113,6 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/mnc"
         android:textSize="16sp" />
     <TextView
@@ -121,6 +146,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="@string/mcc"
         android:textSize="16sp" />
     <TextView
@@ -128,6 +154,7 @@
         style="@style/word_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#584718"
         android:fontFamily="sans-serif-medium"
         android:text="Latency: "
         android:textSize="16sp" />
@@ -138,7 +165,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:textColor="#584718"
         android:text="Content Latency: "
         android:textSize="16sp" />
 
-</LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
