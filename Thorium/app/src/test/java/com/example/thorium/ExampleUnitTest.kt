@@ -1,4 +1,4 @@
-package com.example.mb2
+package com.example.thorium
 
 import org.junit.Test
 

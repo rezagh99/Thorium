@@ -25,12 +25,11 @@
         android:layout_margin="10dp">
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/tech"
         style="@style/word_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/type"
         android:textColor="#584718"
         android:textSize="16sp" />
     <TextView
@@ -50,7 +49,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/strength"
         android:textSize="16sp" />
 
 
@@ -61,7 +59,6 @@
         android:layout_height="wrap_content"
         android:textColor="#584718"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/time"
         android:textSize="16sp" />
 
     <TextView
@@ -71,7 +68,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/altitude"
         android:textSize="16sp" />
 
     <TextView
@@ -81,7 +77,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/longitude"
         android:textSize="16sp" />
 
     <TextView
@@ -91,7 +86,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/arfcn"
         android:textSize="16sp" />
 
     <TextView
@@ -101,7 +95,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/lac"
         android:textSize="16sp" />
 
     <TextView
@@ -111,7 +104,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/tac"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/cid"
@@ -120,7 +112,6 @@
         android:textColor="#584718"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/cell_identity"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/plmn"
@@ -129,7 +120,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/plmn"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/mnc"
@@ -138,7 +128,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/mnc"
         android:textSize="16sp" />
     <TextView
         android:id="@+id/mcc"
@@ -147,27 +136,24 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="#584718"
-        android:text="@string/mcc"
         android:textSize="16sp" />
-    <TextView
-        android:id="@+id/latency"
-        style="@style/word_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#584718"
-        android:fontFamily="sans-serif-medium"
-        android:text="Latency: "
-        android:textSize="16sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/latency"-->
+<!--        style="@style/word_title"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="#584718"-->
+<!--        android:fontFamily="sans-serif-medium"-->
+<!--        android:textSize="16sp" />-->
 
-    <TextView
-        android:id="@+id/content_latency"
-        style="@style/word_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="#584718"
-        android:text="Content Latency: "
-        android:textSize="16sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/content_latency"-->
+<!--        style="@style/word_title"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="sans-serif-medium"-->
+<!--        android:textColor="#584718"-->
+<!--        android:textSize="16sp" />-->
 
 
     </LinearLayout>

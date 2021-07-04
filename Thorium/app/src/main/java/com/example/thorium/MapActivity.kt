@@ -1,4 +1,4 @@
-package com.example.mb2
+package com.example.thorium
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -14,8 +13,9 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.thorium.model.entity.CellInfo
+import com.example.thorium.ui.ViewModel
 
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -23,11 +23,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import java.util.*
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var infoViewModel: CellInfoViewModel
+    private lateinit var infoViewModel: ViewModel
     private lateinit var mMap: GoogleMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-        infoViewModel = ViewModelProvider(this).get(CellInfoViewModel::class.java)
-        infoViewModel.allInfos.observe(this, Observer { words ->
+        infoViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        infoViewModel.info.observe(this, Observer { words ->
             // Update the list of markers
             words?.let { updateMarkers(it) }
         })
@@ -85,7 +84,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getMarkerColor(cellInfo: CellInfo) : Float {
         var color: Float
-        val type = cellInfo.type
+        val type = cellInfo.tech
         when(type) {
             "LTE" -> {
                 if (cellInfo.strength.toInt() >= -80) color = BitmapDescriptorFactory.HUE_BLUE
@@ -125,7 +124,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     "content latency: " + cellInfo.content_latency + " ms\n"
             val marker = mMap.addMarker(MarkerOptions().icon(
                 BitmapDescriptorFactory.defaultMarker(color)).position(
-                pos).title(cellInfo.type).snippet(snip))
+                pos).title(cellInfo.tech).snippet(snip))
         }
     }
 }

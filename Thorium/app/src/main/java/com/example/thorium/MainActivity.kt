@@ -1,4 +1,4 @@
-package com.example.mb2
+package com.example.thorium
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -23,6 +23,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.thorium.model.entity.CellInfo
+import com.example.thorium.ui.ViewModel
+import com.example.thorium.ui.Adapter
 import com.google.android.gms.location.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -34,7 +37,7 @@ import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var infoViewModel: CellInfoViewModel
+    private lateinit var infoViewModel: ViewModel
     private var current_location: Location? = null
     lateinit var mFusedLocationClient: FusedLocationProviderClient
     var latency : Long = 0
@@ -48,14 +51,14 @@ class MainActivity : AppCompatActivity() {
         val tm = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = InfoListAdapter(this)
+        val adapter = Adapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         val start_sample_btn = findViewById<Button>(R.id.start_sample)
 
 
-        infoViewModel = ViewModelProvider(this).get(CellInfoViewModel::class.java)
-        infoViewModel.allInfos.observe(this, Observer { words ->
+        infoViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        infoViewModel.info.observe(this, Observer { words ->
             // Update the cached copy of the words in the adapter.
             words?.let { adapter.setWords(it) }
         })
@@ -106,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         var cid : String = ""
         var mnc: String = ""
         var arfcn : String = ""
-        var typee: String = ""
+        var tech: String = ""
         val infos = tm.allCellInfo
         if (infos.size == 0){
             Toast.makeText(this@MainActivity, "No Signal", Toast.LENGTH_SHORT).show()
@@ -128,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 //rac = cellIdentityGsm.rac.toString()
                 strength = cellSignalStrengthGsm.dbm.toString()
                 gsm_rssi = cellSignalStrengthGsm.asuLevel.toString()
-                typee = "GSM"
+                tech = "GSM"
 
             }
             if (cellInfo is CellInfoWcdma) {
@@ -144,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                     arfcn = cellIdentityWcdma.uarfcn.toString()
                 }
                 //rac
-                typee = "UMTS"
+                tech = "UMTS"
 
             }
             if (cellInfo is CellInfoLte) {
@@ -164,13 +167,13 @@ class MainActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     cellSignalStrengthLte.rsrp.toString()
                 }
-                typee = "LTE"
+                tech = "LTE"
 
             }
             if (cellInfo is CellInfoCdma) {
                 val cellSignalStrengthCdma: CellSignalStrengthCdma = cellInfo.cellSignalStrength
                 strength = cellSignalStrengthCdma.dbm.toString()
-                typee = "UMTS"
+                tech = "UMTS"
 
             }
 
@@ -192,7 +195,7 @@ class MainActivity : AppCompatActivity() {
             requestNewLocationData()
             if (current_location != null)
             {
-                val info = CellInfo(cid=cid,mcc=mcc,mnc = mnc,plmn=plmn,arfcn = arfcn, latency = latency, content_latency = content_latency, tac = tac, lac = lac, type = typee, gsm_rssi = gsm_rssi, strength = strength, longitude = current_location!!.longitude, altitude = current_location!!.latitude, time = System.currentTimeMillis())
+                val info = CellInfo(cid=cid,mcc=mcc,mnc = mnc,plmn=plmn,arfcn = arfcn, latency = latency, content_latency = content_latency, tac = tac, lac = lac, tech = tech, gsm_rssi = gsm_rssi, strength = strength, longitude = current_location!!.longitude, altitude = current_location!!.latitude, time = System.currentTimeMillis())
                 infoViewModel.insert(info)
             }
         }
