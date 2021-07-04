@@ -1,4 +1,4 @@
-package com.example.thorium.model.repo
+package com.example.thorium.model.repository
 
 import androidx.lifecycle.LiveData
 import com.example.thorium.model.entity.CellInfo

@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.thorium.model.entity.CellInfo
-import com.example.thorium.ui.ViewModel
+import com.example.thorium.ui.InfoViewModel
 
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var infoViewModel: ViewModel
+    private lateinit var infoViewModel: InfoViewModel
     private lateinit var mMap: GoogleMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
 
-        infoViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        infoViewModel = ViewModelProvider(this).get(InfoViewModel::class.java)
         infoViewModel.info.observe(this, Observer { words ->
             // Update the list of markers
             words?.let { updateMarkers(it) }
@@ -45,7 +45,53 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     }
+    private fun getColor(cellInfo: CellInfo) : Float {
+        var color: Float
+        val type = cellInfo.type
+        when(type) {
+            "GSM" -> {
+                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
+                else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
+                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
+                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                else color = BitmapDescriptorFactory.HUE_RED
+            }
 
+            "UMTS" -> {
+                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
+                else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
+                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
+                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                else color = BitmapDescriptorFactory.HUE_RED
+            }
+
+            "LTE" -> {
+                if (cellInfo.strength.toInt() >= -80) color = BitmapDescriptorFactory.HUE_BLUE
+                else if (cellInfo.strength.toInt() >= -90) color = BitmapDescriptorFactory.HUE_GREEN
+                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
+                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                else color = BitmapDescriptorFactory.HUE_RED
+
+            }
+
+            else -> color = BitmapDescriptorFactory.HUE_RED
+        }
+        return color
+    }
+    private fun updateMarkers(infos: List<CellInfo>) {
+        for (cellInfo in infos) {
+            val pos = LatLng(cellInfo.altitude, cellInfo.longitude)
+            val color = getColor(cellInfo)
+
+            val snip = "Strength: " + cellInfo.strength + "\n" +
+                    "PLMN: " + cellInfo.mcc + cellInfo.mnc + "\n" +
+                    "Longitude: " + cellInfo.longitude + " ms\n" +
+                  "Altitude: " + cellInfo.altitude + " ms\n"
+            val marker = mMap.addMarker(MarkerOptions().icon(
+                BitmapDescriptorFactory.defaultMarker(color)).position(
+                pos).title(cellInfo.type).snippet(snip))
+        }
+    }
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         if (ActivityCompat.checkSelfPermission(
@@ -82,49 +128,4 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-    private fun getMarkerColor(cellInfo: CellInfo) : Float {
-        var color: Float
-        val type = cellInfo.tech
-        when(type) {
-            "LTE" -> {
-                if (cellInfo.strength.toInt() >= -80) color = BitmapDescriptorFactory.HUE_BLUE
-                else if (cellInfo.strength.toInt() >= -90) color = BitmapDescriptorFactory.HUE_GREEN
-                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
-                else color = BitmapDescriptorFactory.HUE_RED
-
-            }
-            "UMTS" -> {
-                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
-                else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
-                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
-                else color = BitmapDescriptorFactory.HUE_RED
-            }
-            "GSM" -> {
-                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
-                else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
-                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
-                else color = BitmapDescriptorFactory.HUE_RED
-            }
-            else -> color = BitmapDescriptorFactory.HUE_RED
-        }
-        return color
-    }
-
-    private fun updateMarkers(infos: List<CellInfo>) {
-        for (cellInfo in infos) {
-            val pos = LatLng(cellInfo.altitude, cellInfo.longitude)
-            val color = getMarkerColor(cellInfo)
-
-            val snip = "Strength: " + cellInfo.strength + "\n" +
-                    "PLMN: " + cellInfo.mcc + cellInfo.mnc + "\n" +
-                    "latency: " + cellInfo.latency + " ms\n" +
-                    "content latency: " + cellInfo.content_latency + " ms\n"
-            val marker = mMap.addMarker(MarkerOptions().icon(
-                BitmapDescriptorFactory.defaultMarker(color)).position(
-                pos).title(cellInfo.tech).snippet(snip))
-        }
-    }
 }

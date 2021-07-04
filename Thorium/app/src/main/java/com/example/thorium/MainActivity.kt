@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thorium.model.entity.CellInfo
-import com.example.thorium.ui.ViewModel
+import com.example.thorium.ui.InfoViewModel
 import com.example.thorium.ui.Adapter
 import com.google.android.gms.location.*
 import com.karumi.dexter.Dexter
@@ -37,11 +37,9 @@ import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var infoViewModel: ViewModel
+    private lateinit var infoViewModel: InfoViewModel
     private var current_location: Location? = null
     lateinit var mFusedLocationClient: FusedLocationProviderClient
-    var latency : Long = 0
-    var content_latency :Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val start_sample_btn = findViewById<Button>(R.id.start_sample)
 
 
-        infoViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        infoViewModel = ViewModelProvider(this).get(InfoViewModel::class.java)
         infoViewModel.info.observe(this, Observer { words ->
             // Update the cached copy of the words in the adapter.
             words?.let { adapter.setWords(it) }
@@ -109,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         var cid : String = ""
         var mnc: String = ""
         var arfcn : String = ""
-        var tech: String = ""
+        var techno: String = ""
         val infos = tm.allCellInfo
         if (infos.size == 0){
             Toast.makeText(this@MainActivity, "No Signal", Toast.LENGTH_SHORT).show()
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 //rac = cellIdentityGsm.rac.toString()
                 strength = cellSignalStrengthGsm.dbm.toString()
                 gsm_rssi = cellSignalStrengthGsm.asuLevel.toString()
-                tech = "GSM"
+                techno = "GSM"
 
             }
             if (cellInfo is CellInfoWcdma) {
@@ -147,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                     arfcn = cellIdentityWcdma.uarfcn.toString()
                 }
                 //rac
-                tech = "UMTS"
+                techno = "UMTS"
 
             }
             if (cellInfo is CellInfoLte) {
@@ -167,13 +165,13 @@ class MainActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     cellSignalStrengthLte.rsrp.toString()
                 }
-                tech = "LTE"
+                techno = "LTE"
 
             }
             if (cellInfo is CellInfoCdma) {
                 val cellSignalStrengthCdma: CellSignalStrengthCdma = cellInfo.cellSignalStrength
                 strength = cellSignalStrengthCdma.dbm.toString()
-                tech = "UMTS"
+                techno = "UMTS"
 
             }
 
@@ -185,8 +183,6 @@ class MainActivity : AppCompatActivity() {
                 val nc: NetworkCapabilities = cm.getNetworkCapabilities(cm.activeNetwork)
             }
 
-            latency = latencycal("8.8.8.8")
-            content_latency = contlatencycal("https://www.aparat.com/")
         }
         catch (e: IndexOutOfBoundsException) {
             Toast.makeText(this@MainActivity, "No Signal", Toast.LENGTH_SHORT).show()
@@ -195,7 +191,7 @@ class MainActivity : AppCompatActivity() {
             requestNewLocationData()
             if (current_location != null)
             {
-                val info = CellInfo(cid=cid,mcc=mcc,mnc = mnc,plmn=plmn,arfcn = arfcn, latency = latency, content_latency = content_latency, tac = tac, lac = lac, tech = tech, gsm_rssi = gsm_rssi, strength = strength, longitude = current_location!!.longitude, altitude = current_location!!.latitude, time = System.currentTimeMillis())
+                val info = CellInfo(cid=cid,mcc=mcc,mnc = mnc,plmn=plmn,arfcn = arfcn, latency = 0, content_latency = 0, tac = tac, lac = lac, type = techno, gsm_rssi = gsm_rssi, strength = strength, longitude = current_location!!.longitude, altitude = current_location!!.latitude, time = System.currentTimeMillis())
                 infoViewModel.insert(info)
             }
         }
@@ -234,59 +230,6 @@ class MainActivity : AppCompatActivity() {
         println("map button pressed")
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun latencycal(addr: String) :Long {
-        val runtime = Runtime.getRuntime()
-        var pingg : Long =999999999
-        try {
-            var a : Long = (System.currentTimeMillis() %100000)
-            val IpProcess = runtime.exec("/system/bin/ping -c 1 "+addr)
-            val mExitValue  = IpProcess.waitFor(2, TimeUnit.SECONDS)
-            if (mExitValue ){
-                var b : Long = (System.currentTimeMillis() %100000)
-                if(b<=a){
-                    pingg = (100000 - a) + b
-                }else{
-                    pingg = b - a
-                }
-            }else{
-                pingg = 999999999
-            }
-
-//            latency = pingg
-        } catch (ignore: InterruptedException) {
-            ignore.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return pingg
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun contlatencycal(addr: String) :Long {
-        val runtime = Runtime.getRuntime()
-        var pingg : Long =999999999
-        try {
-            var a : Long = (System.currentTimeMillis() %100000)
-            val IpProcess = runtime.exec("/system/bin/ping -c 1 "+addr)
-            val mExitValue  = IpProcess.waitFor(2,TimeUnit.SECONDS)
-            if (mExitValue ){
-                var b : Long = (System.currentTimeMillis() %100000)
-                if(b<=a){
-                    pingg = (100000 - a) + b
-                }else{
-                    pingg = b - a
-                }
-            }else{
-                pingg = 999999999
-            }
-        } catch (ignore: InterruptedException) {
-            ignore.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return pingg
     }
 
 
