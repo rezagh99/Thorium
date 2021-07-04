@@ -31,7 +31,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -39,7 +38,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         infoViewModel = ViewModelProvider(this).get(InfoViewModel::class.java)
         infoViewModel.info.observe(this, Observer { words ->
-            // Update the list of markers
             words?.let { updateMarkers(it) }
         })
 
@@ -50,26 +48,26 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val type = cellInfo.type
         when(type) {
             "GSM" -> {
-                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
-                else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
+                if (cellInfo.strength.toInt() >= -60) color = BitmapDescriptorFactory.HUE_BLUE
+                else if (cellInfo.strength.toInt() >= -80) color = BitmapDescriptorFactory.HUE_GREEN
                 else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                else if (cellInfo.strength.toInt() >= -120) color = BitmapDescriptorFactory.HUE_ORANGE
                 else color = BitmapDescriptorFactory.HUE_RED
             }
 
             "UMTS" -> {
-                if (cellInfo.strength.toInt() >= -70) color = BitmapDescriptorFactory.HUE_BLUE
+                if (cellInfo.strength.toInt() >= -65) color = BitmapDescriptorFactory.HUE_BLUE
                 else if (cellInfo.strength.toInt() >= -85) color = BitmapDescriptorFactory.HUE_GREEN
-                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                else if (cellInfo.strength.toInt() >= -105) color = BitmapDescriptorFactory.HUE_YELLOW
+                else if (cellInfo.strength.toInt() >= -120) color = BitmapDescriptorFactory.HUE_ORANGE
                 else color = BitmapDescriptorFactory.HUE_RED
             }
 
             "LTE" -> {
-                if (cellInfo.strength.toInt() >= -80) color = BitmapDescriptorFactory.HUE_BLUE
-                else if (cellInfo.strength.toInt() >= -90) color = BitmapDescriptorFactory.HUE_GREEN
-                else if (cellInfo.strength.toInt() >= -100) color = BitmapDescriptorFactory.HUE_YELLOW
-                else if (cellInfo.strength.toInt() >= -110) color = BitmapDescriptorFactory.HUE_ORANGE
+                if (cellInfo.strength.toInt() >= -75) color = BitmapDescriptorFactory.HUE_BLUE
+                else if (cellInfo.strength.toInt() >= -95) color = BitmapDescriptorFactory.HUE_GREEN
+                else if (cellInfo.strength.toInt() >= -105) color = BitmapDescriptorFactory.HUE_YELLOW
+                else if (cellInfo.strength.toInt() >= -125) color = BitmapDescriptorFactory.HUE_ORANGE
                 else color = BitmapDescriptorFactory.HUE_RED
 
             }

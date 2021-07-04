@@ -57,11 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         infoViewModel = ViewModelProvider(this).get(InfoViewModel::class.java)
         infoViewModel.info.observe(this, Observer { words ->
-            // Update the cached copy of the words in the adapter.
+
             words?.let { adapter.setWords(it) }
         })
 
-        //start sample button listener
         start_sample_btn.setOnClickListener {
             Dexter.withContext(this)
                 .withPermissions(
@@ -227,7 +226,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showMap(view: View) {
-        println("map button pressed")
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
     }
